@@ -1,0 +1,7 @@
+<resources>
+    <dimen name="activity_horizontal_padding">16dp</dimen>
+    <dimen name="activity_vertical_padding">16dp</dimen>
+
+    <dimen name="image_item_margin">4dp</dimen>
+    <dimen name="field_to_top_image_margin">16dp</dimen>
+</resources>

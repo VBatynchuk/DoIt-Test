@@ -1,0 +1,32 @@
+<resources>
+
+    <string name="app_name">Doit test</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_images_feed">ImagesFeedActivity</string>
+
+    <string name="user_name">User Name</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+
+    <string name="send">Send</string>
+    <string name="login">Log in</string>
+    <string name="have_account">Already signed up? <u>Log in.</u></string>
+
+    <string name="description">Description</string>
+    <string name="hashtag">#hashtag</string>
+
+    <string name="action_add_image">Add Image</string>
+    <string name="action_show_gif">Show Gif</string>
+    <string name="action_upload">Upload Image</string>
+
+    <string name="image_too_small">Selected image is too small.</string>
+    <string name="no_image_selected">Please, select image first.</string>
+    <string name="problem_getting_coord">Can\'t get image coordinates.</string>
+    <string name="sign_up_problem">Please, check if login and password are correct.</string>
+    <string name="location_permission_needed">Can\'t read location data, check permissions in phone settings.</string>
+    <string name="storage_permission_needed">Can\'t read images, check permissions in phone settings.</string>
+
+
+
+</resources>
