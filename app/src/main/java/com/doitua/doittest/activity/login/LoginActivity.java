@@ -9,6 +9,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.doitua.doittest.R;
 import com.doitua.doittest.activity.feed.ImagesFeedActivity;
@@ -67,6 +68,11 @@ public class LoginActivity extends BaseActivity implements LoginActivityView {
     @Override
     public void startFeedActivity() {
         startActivity(new Intent(this, ImagesFeedActivity.class));
+    }
+
+    @Override
+    public void showError() {
+        Toast.makeText(this, R.string.sign_up_problem, Toast.LENGTH_SHORT).show();
     }
 
     @Override

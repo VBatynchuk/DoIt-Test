@@ -1,16 +1,13 @@
 package com.doitua.doittest.activity.feed;
 
-import android.util.Log;
-
 import com.doitua.doittest.model.PrefHelper;
 import com.doitua.doittest.model.image.ImageResponseList;
 import com.doitua.doittest.retrofit.RetrofitService;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Response;
 
 /**
  * Created by batynchuk on 9/21/17.
@@ -22,8 +19,8 @@ public class ImagesFeedActivityPresenterIpml implements ImagesFeedActivityPresen
     private final ImagesFeedActivityView mImagesFeedActivityView;
     private final PrefHelper mPrefHelper;
 
-    private Observable<Response<ImageResponseList>> mResponseObservable;
-    private Consumer<Response<ImageResponseList>> mResponseConsumer;
+    private Single<ImageResponseList> mResponseObservable;
+    private Consumer<ImageResponseList> mResponseConsumer;
 
     public ImagesFeedActivityPresenterIpml(ImagesFeedActivityView imagesFeedActivityView,
                                            RetrofitService retrofitService,
@@ -39,14 +36,12 @@ public class ImagesFeedActivityPresenterIpml implements ImagesFeedActivityPresen
         mImagesFeedActivityView.showProgress();
 
         mResponseObservable = mRetrofitService.getAllImages(mPrefHelper.getToken())
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
 
         mResponseConsumer = imageModelResponse -> {
-            if (imageModelResponse.isSuccessful()) {
-                mImagesFeedActivityView.setItems(imageModelResponse.body().getImageModelList());
-                mImagesFeedActivityView.hideProgress();
-            }
+            mImagesFeedActivityView.setItems(imageModelResponse.getImageModelList());
+            mImagesFeedActivityView.hideProgress();
         };
 
         mResponseObservable.subscribe(mResponseConsumer);
@@ -65,13 +60,10 @@ public class ImagesFeedActivityPresenterIpml implements ImagesFeedActivityPresen
         mImagesFeedActivityView.showGifProgressDialog();
 
         mRetrofitService.getGif(mPrefHelper.getToken())
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(responseBodyResponse -> {
-                    if (responseBodyResponse.isSuccessful()) {
-                        mImagesFeedActivityView.playGif(responseBodyResponse.body().getGifUrl());
-                    }
-                });
+                .subscribe(responseBodyResponse ->
+                        mImagesFeedActivityView.playGif(responseBodyResponse.getGifUrl()));
     }
 
 }

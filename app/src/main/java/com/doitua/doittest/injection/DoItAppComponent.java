@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import com.doitua.doittest.app.DoItApp;
 import com.doitua.doittest.model.PrefHelper;
 import com.doitua.doittest.retrofit.RetrofitService;
+import com.doitua.doittest.util.SchedulerHelper;
 
 import java.io.File;
 
@@ -36,5 +37,7 @@ public interface DoItAppComponent {
     SharedPreferences sharedPreference();
 
     PrefHelper prefToken();
+
+    SchedulerHelper schedulerHelper();
 
 }

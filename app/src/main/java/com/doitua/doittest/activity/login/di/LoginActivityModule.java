@@ -7,6 +7,7 @@ import com.doitua.doittest.activity.login.LoginActivityView;
 import com.doitua.doittest.injection.ActivityScope;
 import com.doitua.doittest.model.PrefHelper;
 import com.doitua.doittest.retrofit.RetrofitService;
+import com.doitua.doittest.util.SchedulerHelper;
 
 import dagger.Module;
 import dagger.Provides;
@@ -17,11 +18,9 @@ import dagger.Provides;
 @Module
 public class LoginActivityModule {
 
-    private LoginActivity loginActivity;
     private LoginActivityView loginActivityView;
 
     public LoginActivityModule(LoginActivity loginActivity) {
-        this.loginActivity = loginActivity;
         this.loginActivityView = loginActivity;
     }
 
@@ -37,7 +36,8 @@ public class LoginActivityModule {
     @Provides
     LoginActivityPresenter provideLoginActivityPresenter(LoginActivityView loginActivityView,
                                                          RetrofitService retrofitService,
-                                                         PrefHelper prefHelper) {
-        return new LoginActivityPresenterImpl(loginActivityView, retrofitService, prefHelper);
+                                                         PrefHelper prefHelper,
+                                                         SchedulerHelper schedulerHelper) {
+        return new LoginActivityPresenterImpl(loginActivityView, retrofitService, prefHelper, schedulerHelper);
     }
 }

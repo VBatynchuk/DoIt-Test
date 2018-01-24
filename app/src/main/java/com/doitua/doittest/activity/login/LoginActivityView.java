@@ -10,4 +10,6 @@ public interface LoginActivityView extends BaseView {
 
     void startFeedActivity();
 
+    void showError();
+
 }

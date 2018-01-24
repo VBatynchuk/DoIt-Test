@@ -10,6 +10,7 @@ import com.doitua.doittest.model.PrefHelper;
 import com.doitua.doittest.retrofit.RetrofitBuilder;
 import com.doitua.doittest.retrofit.RetrofitService;
 import com.doitua.doittest.util.Constants;
+import com.doitua.doittest.util.SchedulerHelper;
 
 import java.io.File;
 
@@ -17,6 +18,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by batynchuk on 9/20/17.
@@ -76,6 +79,12 @@ public class DoItAppModule {
     @Provides
     PrefHelper providePrefToken(SharedPreferences sharedPreferences) {
         return new PrefHelper(sharedPreferences);
+    }
+
+    @Singleton
+    @Provides
+    SchedulerHelper provideSchedulerHelper(){
+        return new SchedulerHelper(Schedulers.io(), AndroidSchedulers.mainThread());
     }
 
 }

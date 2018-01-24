@@ -113,15 +113,10 @@ public class UploadImageActivityPresenterImpl implements UploadImageActivityPres
                         stringToRequestBody(hashTag),
                         stringToRequestBody((String.valueOf(mUploadImage.getLatitude()))),
                         stringToRequestBody(String.valueOf(mUploadImage.getLongitude())))
-                        .subscribeOn(Schedulers.newThread())
+                        .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(responseBodyResponse -> {
-                            if (responseBodyResponse.isSuccessful()) {
-                                mUploadImageActivityView.setSuccessfulResult();
-                            } else {
-                                mUploadImageActivityView.hildeUploading();
-                            }
-                        });
+                        .subscribe(mUploadImageActivityView::setSuccessfulResult,
+                                t -> mUploadImageActivityView.hildeUploading());
             } else {
                 mUploadImageActivityView.showImageLocationRequired();
             }

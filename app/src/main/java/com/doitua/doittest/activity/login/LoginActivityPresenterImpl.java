@@ -1,12 +1,8 @@
 package com.doitua.doittest.activity.login;
 
-import android.util.Log;
-
 import com.doitua.doittest.model.PrefHelper;
 import com.doitua.doittest.retrofit.RetrofitService;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import com.doitua.doittest.util.SchedulerHelper;
 
 /**
  * Created by batynchuk on 9/22/17.
@@ -17,12 +13,15 @@ public class LoginActivityPresenterImpl implements LoginActivityPresenter {
     private LoginActivityView mLoginActivityView;
     private RetrofitService mRetrofitService;
     private PrefHelper mPrefHelper;
+    private SchedulerHelper mSchedulerHelper;
 
 
-    public LoginActivityPresenterImpl(LoginActivityView loginActivityView, RetrofitService retrofitService, PrefHelper prefHelper) {
+    public LoginActivityPresenterImpl(LoginActivityView loginActivityView, RetrofitService retrofitService, PrefHelper prefHelper,
+                                      SchedulerHelper schedulerHelper) {
         mLoginActivityView = loginActivityView;
         mRetrofitService = retrofitService;
         mPrefHelper = prefHelper;
+        mSchedulerHelper = schedulerHelper;
     }
 
     @Override
@@ -33,15 +32,12 @@ public class LoginActivityPresenterImpl implements LoginActivityPresenter {
     @Override
     public void onLoginClick(String email, String password) {
         mRetrofitService.login(email, password)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(mSchedulerHelper.getWorkerScheduler())
+                .observeOn(mSchedulerHelper.getMainScheduler())
                 .subscribe(loginResponse -> {
-                    if (loginResponse.isSuccessful()){
-                        mPrefHelper.setToken(loginResponse.body().getToken());
-                        mLoginActivityView.startFeedActivity();
-                    }
-                    Log.e("TAG", "onLoginClick: " + loginResponse.body());
-                });
+                    mPrefHelper.setToken(loginResponse.getToken());
+                    mLoginActivityView.startFeedActivity();
+                }, t -> mLoginActivityView.showError());
 
     }
 }

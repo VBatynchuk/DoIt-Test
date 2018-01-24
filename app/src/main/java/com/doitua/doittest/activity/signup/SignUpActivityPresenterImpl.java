@@ -97,17 +97,14 @@ public class SignUpActivityPresenterImpl implements SignUpActivityPresenter {
                 stringToRequestBody(mUser.getEmail()),
                 stringToRequestBody(mUser.getPassword()),
                 RequestBody.create(MediaType.parse("image/*"), mUser.getAvatar()))
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(signInResponseResponse -> {
-                    if (signInResponseResponse.isSuccessful()) {
-                        mPrefHelper.setToken(signInResponseResponse.body().getToken());
-                        mPrefHelper.setAvatarUrl(signInResponseResponse.body().getAvataLink());
-                        mSignUpActivityView.startFeedActivity();
-                    } else {
-                        mSignUpActivityView.showError();
-                    }
-                });
+                            mPrefHelper.setToken(signInResponseResponse.getToken());
+                            mPrefHelper.setAvatarUrl(signInResponseResponse.getAvataLink());
+                            mSignUpActivityView.startFeedActivity();
+                        }, e -> mSignUpActivityView.showError()
+                );
 
 
     }
